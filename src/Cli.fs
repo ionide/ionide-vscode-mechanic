@@ -22,9 +22,6 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
             "shell" ==> true
         ]
 
-    printfn "%A" pluginBinPath
-    printfn "%A" projectFile
-
     let prms =
         seq { yield pluginBinPath </> "mech.dll"
               yield projectFile } |> ResizeArray
