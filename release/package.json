@@ -23,5 +23,8 @@
     "outputChannels": [
       "Mechanic"
     ]
-  }
+  },
+  "extensionDependencies": [
+    "Ionide.Ionide-fsharp"
+  ]
 }
