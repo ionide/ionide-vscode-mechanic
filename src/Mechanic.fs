@@ -22,7 +22,7 @@ let private runInScope = promise {
         do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
             |> Promise.fromThenable
             |> Promise.ignore
-    | 1 ->                
+    | 1 ->
         // Only one fsproj found, run mechanic directly
         do! Mechanic.run state.[0].Project outputChannel
     | _ ->
@@ -45,7 +45,17 @@ let activate (context : Vscode.ExtensionContext) =
         Vscode.window.showWarningMessage("Mechanic couldn't be activated, Ionide-fsharp is required", [] |> ResizeArray)
         |> ignore
     | Some ext ->
-        ext.exports.ProjectLoadedEvent $ (state.Add) |> ignore
+        ext.exports.ProjectLoadedEvent $ (fun (project : Project) ->
+            let exist =
+                state
+                |> Seq.toList
+                |> List.exists(fun currentProject ->
+                    currentProject.Project = project.Project
+                )
+            // Only add the project if not already known
+            if not exist then
+                state.Add project
+        ) |> ignore
 
         Vscode.commands.registerCommand("mechanic.run", fun _ ->
             Promise.start runInScope
