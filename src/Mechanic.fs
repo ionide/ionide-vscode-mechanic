@@ -15,6 +15,30 @@ let private  askFsProjs (projFiles : string seq) =
             |> Promise.fromThenable
     }
 
+let private runInScope = promise {
+    match state.Count with
+    | 0 ->
+        // We didn't find an fsproj in the workspace directory
+        // This case should not happen since we activate the extension only if an fsproj is found
+        do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
+            |> Promise.fromThenable
+            |> Promise.ignore
+    | 1 ->                
+        // Only one fsproj found, run mechanic directly
+        do! Mechanic.run state.[0].Project outputChannel
+    | _ ->
+        // Several fsproj found, ask the users which one to use
+        let! projFile = askFsProjs (state |> Seq.map (fun p -> p.Project))
+
+        match projFile with
+        | None ->
+            do! Vscode.window.showInformationMessage("No project selected, command canceled", [] |> ResizeArray)
+                |> Promise.fromThenable
+                |> Promise.ignore
+        | Some file ->
+            do! Mechanic.run file outputChannel
+}
+
 let activate (context : Vscode.ExtensionContext) =
     let ext = Vscode.extensions.getExtension<IonideApi> "Ionide.Ionide-fsharp"
     match ext with
@@ -22,34 +46,10 @@ let activate (context : Vscode.ExtensionContext) =
         Vscode.window.showWarningMessage("Mechanic couldn't be activated, Ionide-fsharp is required", [] |> ResizeArray)
         |> ignore
     | Some ext ->
-    ext.exports.ProjectLoadedEvent $ (state.Add) |> ignore
+        ext.exports.ProjectLoadedEvent $ (state.Add) |> ignore
 
-    Vscode.commands.registerCommand("mechanic.run", fun _ ->
-        promise {
-            match state.Count with
-            // We didn't find an fsproj in the workspace directory
-            // This case should not occure because we active the extension only if an fsproj is found
-            | 0 ->
-                do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
-                    |> Promise.fromThenable
-                    |> Promise.ignore
-            // Only one fsproj found, run mechanic directly
-            | 1 ->
-                do! Mechanic.run state.[0].Project outputChannel
-            // Several fsproj found, ask the users which one to use
-            | _ ->
-                let! projFile = askFsProjs (state |> Seq.map (fun p -> p.Project))
-
-                match projFile with
-                | None ->
-                    do! Vscode.window.showInformationMessage("No project selected, command canceled", [] |> ResizeArray)
-                        |> Promise.fromThenable
-                        |> Promise.ignore
-                | Some file ->
-                    do! Mechanic.run file outputChannel
-        }
-        |> Promise.start
-
-        None
-    )
-    |> context.subscriptions.Add
+        Vscode.commands.registerCommand("mechanic.run", fun _ ->
+            Promise.start runInScope
+            None
+        )
+        |> context.subscriptions.Add
