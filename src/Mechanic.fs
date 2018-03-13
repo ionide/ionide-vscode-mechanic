@@ -14,7 +14,11 @@ let private askFsProjs (projFiles : string seq) = promise {
         |> Promise.fromThenable
 }
 
-let private runInScope = promise {
+let private runInScope (input: ProjectExplorerModel option) = promise {
+    match input with
+    | Some (ProjectExplorerModel.Project (p,_,_,_,_,_,_)) ->
+        do! Mechanic.run p outputChannel
+    | _ ->
     match state.Count with
     | 0 ->
         // We didn't find an fsproj in the workspace directory
@@ -57,8 +61,10 @@ let activate (context : Vscode.ExtensionContext) =
                 state.Add project
         ) |> ignore
 
-        Vscode.commands.registerCommand("mechanic.run", fun _ ->
-            Promise.start runInScope
+        Vscode.commands.registerCommand("mechanic.run", fun input ->
+            let m = unbox<ProjectExplorerModel option> input
+            printfn "M: %A" m
+            Promise.start (runInScope m)
             None
         )
         |> context.subscriptions.Add

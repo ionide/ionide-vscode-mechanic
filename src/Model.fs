@@ -35,6 +35,23 @@ type Project = {
     AdditionalInfo: Map<string, string>
 }
 
+[<RequireQualifiedAccess>]
+type ProjectExplorerModel =
+    | Workspace of Projects : ProjectExplorerModel list
+    | Solution of path: string * name: string * items: ProjectExplorerModel list
+    | WorkspaceFolder of name: string * items: ProjectExplorerModel list
+    | ReferenceList of References: ProjectExplorerModel list * projectPath : string
+    | ProjectReferencesList of Projects : ProjectExplorerModel list * ProjectPath : string
+    | ProjectNotLoaded of path: string * name: string
+    | ProjectLoading of path: string * name: string
+    | ProjectFailedToLoad of path: string * name: string * error: string
+    | ProjectNotRestored of path: string * name: string * error: string
+    | Project of path: string * name: string * Files: ProjectExplorerModel list * ProjectReferencesList : ProjectExplorerModel  * ReferenceList: ProjectExplorerModel * isExe : bool * project : Project
+    | Folder of name : string * path: string * Files : ProjectExplorerModel list
+    | File of path: string * name: string * projectPath : string
+    | Reference of path: string * name: string * projectPath : string
+    | ProjectReference of path: string * name: string * projectPath : string
+
 type IonideApi = {
     ProjectLoadedEvent: Event<Project>
 }
