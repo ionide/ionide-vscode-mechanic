@@ -1,0 +1,27 @@
+{
+  "name": "mechanic",
+  "publisher": "Mechanic",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^0.10.10"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.fsproj"
+  ],
+  "main": "./mechanic",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mechanic.run",
+        "title": "Run",
+        "category": "Mechanic"
+      }
+    ],
+    "outputChannels": [
+      "Mechanic"
+    ]
+  }
+}
