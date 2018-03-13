@@ -15,6 +15,21 @@ let private askFsProjs (projFiles : string seq) = promise {
         |> Promise.fromThenable
 }
 
+[<RequireQualifiedAccess>]
+module TextEditor =
+
+    let (|IsFsprojFile|_|) (textEditor: Vscode.TextEditor) =
+        if textEditor.document.fileName.EndsWith(".fsproj") then
+            Some textEditor
+        else
+            None
+
+    let (|IsFsFile|_|) (textEditor: Vscode.TextEditor) =
+        if textEditor.document.fileName.EndsWith(".fs") then
+            Some textEditor
+        else
+            None
+
 let private runInScope (input: ProjectExplorerModel option) = promise {
     match input with
     | Some (ProjectExplorerModel.Project (p,_,_,_,_,_,_)) ->
@@ -22,7 +37,8 @@ let private runInScope (input: ProjectExplorerModel option) = promise {
     | _ ->
         // Decision based on the active file
         match Vscode.window.activeTextEditor with
-        | Some textEditor ->
+        // Active file is an .fs file, try to find the associated project
+        | Some (TextEditor.IsFsFile textEditor) ->
             let projectOption =
                 state
                 |> Seq.map (fun keyValue -> keyValue.Value)
@@ -39,8 +55,12 @@ let private runInScope (input: ProjectExplorerModel option) = promise {
             | Some project ->
                 do! Mechanic.run project.Project outputChannel
 
-        // If no active file, then we fallback to default case
-        | None ->
+        // Active file is an fsproj so we pass it to Mechanic
+        | Some (TextEditor.IsFsprojFile textEditor) ->
+            do! Mechanic.run textEditor.document.uri.path outputChannel
+
+        // If no active file or not an known type, then we fallback to default case
+        | Some _ | None ->
             match state.Count with
             | 0 ->
                 // We didn't find an fsproj in the workspace directory
