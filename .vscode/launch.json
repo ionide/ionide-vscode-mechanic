@@ -6,10 +6,14 @@
 			"name": "Launch",
 			"type": "extensionHost",
 			"runtimeExecutable": "${execPath}",
-			"args": ["${workspaceRoot}/demo", "--extensionDevelopmentPath=${workspaceRoot}/release" ],
+			"args": [
+				"${workspaceRoot}/demo",
+				"--extensionDevelopmentPath=${workspaceRoot}/release"
+			],
 			"stopOnEntry": false,
 			"request": "launch",
-			"sourceMaps": false
+			"sourceMaps": false,
+			"preLaunchTask": "Build"
 		}
 	]
 }
