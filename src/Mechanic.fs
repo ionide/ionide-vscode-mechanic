@@ -63,7 +63,6 @@ let activate (context : Vscode.ExtensionContext) =
 
         Vscode.commands.registerCommand("mechanic.run", fun input ->
             let m = unbox<ProjectExplorerModel option> input
-            printfn "M: %A" m
             Promise.start (runInScope m)
             None
         )
