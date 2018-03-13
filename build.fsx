@@ -16,7 +16,7 @@ open Fake.Git
 // Build the Generator project and run it
 // --------------------------------------------------------------------------------------
 
-let MechanicCliSource = "paket-files" </> "github.com" </> "fsprojects" </> "Mechanic" </> "src" </> "Mechanic.CommandLine" </> "bin" </> "Debug" </> "netcoreapp2.0"
+let MechanicCliSource = "paket-files" </> "github.com" </> "fsprojects" </> "Mechanic" </> "src" </> "Mechanic.CommandLine" </> "bin" </> "Release" </> "netcoreapp2.0" </> "publish"
 let binTools = "release" </> "bin"
 let MechanicDestination = binTools </> "Mechanic"
 
@@ -69,12 +69,12 @@ Target "CopyMechanic" (fun _ ->
 )
 
 let run cmd args dir =
-    if execProcess( fun info ->
+    if not <| execProcess( fun info ->
         info.FileName <- cmd
         if not( String.IsNullOrWhiteSpace dir) then
             info.WorkingDirectory <- dir
         info.Arguments <- args
-    ) System.TimeSpan.MaxValue = false then
+    ) System.TimeSpan.MaxValue then
         failwithf "Error while running '%s' with args: %s" cmd args
 
 let platformTool tool path =
@@ -85,7 +85,7 @@ let platformTool tool path =
             | Some v -> v
 
 
-let vsceTool = lazy (platformTool "vsce" "vsce.cmd")            
+let vsceTool = lazy (platformTool "vsce" "vsce.cmd")
 
 
 Target "SetVersion" (fun _ ->

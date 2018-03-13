@@ -85,15 +85,15 @@ NUGET
       System.Text.Encoding (>= 4.3) - restriction: >= netstandard1.1
       System.Threading (>= 4.3) - restriction: >= netstandard1.1
     Microsoft.Net.Compilers (2.7) - restriction: >= netcoreapp2.0
-    Microsoft.NETCore.App (2.0.5) - restriction: >= netcoreapp2.0
-      Microsoft.NETCore.DotNetHostPolicy (>= 2.0.5) - restriction: >= netcoreapp2.0
+    Microsoft.NETCore.App (2.0.6) - restriction: >= netcoreapp2.0
+      Microsoft.NETCore.DotNetHostPolicy (>= 2.0.6) - restriction: >= netcoreapp2.0
       Microsoft.NETCore.Platforms (>= 2.0.1) - restriction: >= netcoreapp2.0
       NETStandard.Library (>= 2.0.1) - restriction: >= netcoreapp2.0
-    Microsoft.NETCore.DotNetAppHost (2.0.5) - restriction: >= netcoreapp2.0
-    Microsoft.NETCore.DotNetHostPolicy (2.0.5) - restriction: >= netcoreapp2.0
-      Microsoft.NETCore.DotNetHostResolver (>= 2.0.5)
-    Microsoft.NETCore.DotNetHostResolver (2.0.5) - restriction: >= netcoreapp2.0
-      Microsoft.NETCore.DotNetAppHost (>= 2.0.5)
+    Microsoft.NETCore.DotNetAppHost (2.0.6) - restriction: >= netcoreapp2.0
+    Microsoft.NETCore.DotNetHostPolicy (2.0.6) - restriction: >= netcoreapp2.0
+      Microsoft.NETCore.DotNetHostResolver (>= 2.0.6)
+    Microsoft.NETCore.DotNetHostResolver (2.0.6) - restriction: >= netcoreapp2.0
+      Microsoft.NETCore.DotNetAppHost (>= 2.0.6)
     Microsoft.NETCore.Platforms (2.0.1) - restriction: >= netcoreapp2.0
     Microsoft.NETCore.Targets (2.0) - restriction: || (&& (< monoandroid) (< monotouch) (< net45) (>= netstandard1.6) (< netstandard2.0) (< win8) (< wpa81) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net45) (< netstandard1.3) (>= netstandard1.6) (< win8) (< wpa81)) (&& (< monoandroid) (< net45) (< netstandard1.5) (>= netstandard1.6) (< win8) (< wpa81)) (&& (>= netstandard1.6) (< portable-net45+win8+wp8+wpa81))
     Microsoft.Win32.Primitives (4.3) - restriction: || (&& (< monoandroid) (< monotouch) (< net45) (>= netstandard1.6) (< netstandard2.0) (< wpa81) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net45) (< netstandard1.4) (>= netstandard1.6) (< wpa81)) (&& (< monoandroid) (< net45) (< netstandard1.5) (>= netstandard1.6) (< wpa81)) (&& (>= net46) (< netstandard1.4) (>= netstandard1.6)) (&& (< netstandard1.5) (>= netstandard1.6) (>= uap10.0))
@@ -681,11 +681,11 @@ GITHUB
     VSCode.fs (b7f0ed29dca26325ff55f709cb90b2ee555a188b)
 GIT
   remote: https://github.com/fsprojects/Mechanic.git
-     (b2db053239e71a3d9c7865d17e5651913f22d70a)
-      build: build.cmd Build
+     (c94e77398989e114d9b67fdd445240363e6fafe7)
+      build: build.cmd Release
       os: windows
-     (b2db053239e71a3d9c7865d17e5651913f22d70a)
-      build: build.sh --use-mono -- Build
+     (c94e77398989e114d9b67fdd445240363e6fafe7)
+      build: build.sh --use-mono -- Release
       os: mono
 GROUP build
 NUGET
