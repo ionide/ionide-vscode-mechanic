@@ -47,7 +47,11 @@ let run projFile outputChannel =
                 |> Promise.fromThenable
                 |> Promise.ignore
         | _ ->
-             do! Vscode.window.showErrorMessage("Mechanic failed", [] |> ResizeArray)
-                |> Promise.fromThenable
-                |> Promise.ignore
+            let! result = Vscode.window.showErrorMessage("Mechanic failed", [ "Show output" ] |> ResizeArray)
+                          |> Promise.fromThenable
+
+            match result with
+            | Some "Show output" ->
+                outputChannel.show(true)
+            | None | Some _ -> ()
     }
