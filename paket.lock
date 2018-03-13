@@ -681,10 +681,10 @@ GITHUB
     VSCode.fs (b7f0ed29dca26325ff55f709cb90b2ee555a188b)
 GIT
   remote: https://github.com/fsprojects/Mechanic.git
-     (c0a3288bf472bc7ec2410054d2b08b50cd3ad35e)
+     (b2db053239e71a3d9c7865d17e5651913f22d70a)
       build: build.cmd Build
       os: windows
-     (c0a3288bf472bc7ec2410054d2b08b50cd3ad35e)
+     (b2db053239e71a3d9c7865d17e5651913f22d70a)
       build: build.sh --use-mono -- Build
       os: mono
 GROUP build
