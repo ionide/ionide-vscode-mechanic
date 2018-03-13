@@ -4,8 +4,9 @@ open Fable.Core.JsInterop
 open Fable.PowerPack
 open VSCode
 open Model
+open System.Collections.Generic
 
-let state = ResizeArray<Project>()
+let state = Dictionary<string, Project>()
 let outputChannel = Vscode.window.createOutputChannel "Mechanic"
 
 let private askFsProjs (projFiles : string seq) = promise {
@@ -19,27 +20,49 @@ let private runInScope (input: ProjectExplorerModel option) = promise {
     | Some (ProjectExplorerModel.Project (p,_,_,_,_,_,_)) ->
         do! Mechanic.run p outputChannel
     | _ ->
-    match state.Count with
-    | 0 ->
-        // We didn't find an fsproj in the workspace directory
-        // This case should not happen since we activate the extension only if an fsproj is found
-        do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
-            |> Promise.fromThenable
-            |> Promise.ignore
-    | 1 ->
-        // Only one fsproj found, run mechanic directly
-        do! Mechanic.run state.[0].Project outputChannel
-    | _ ->
-        // Several fsproj found, ask the users which one to use
-        let! projFile = askFsProjs (state |> Seq.map (fun p -> p.Project))
+        // Decision based on the active file
+        match Vscode.window.activeTextEditor with
+        | Some textEditor ->
+            let projectOption =
+                state
+                |> Seq.map (fun keyValue -> keyValue.Value)
+                |> Seq.tryFind (fun (project : Project) ->
+                    project.Files |> List.contains textEditor.document.uri.path
+                )
 
-        match projFile with
+            match projectOption with
+            | None ->
+                // Current version of Mechanic only work if the .fs file is inside a project
+                do! Vscode.window.showWarningMessage("Mechanic not run, we couldn't find a project associated with the active file", [] |> ResizeArray)
+                    |> Promise.fromThenable
+                    |> Promise.ignore
+            | Some project ->
+                do! Mechanic.run project.Project outputChannel
+
+        // If no active file, then we fallback to default case
         | None ->
-            do! Vscode.window.showInformationMessage("No project selected, command canceled", [] |> ResizeArray)
-                |> Promise.fromThenable
-                |> Promise.ignore
-        | Some file ->
-            do! Mechanic.run file outputChannel
+            match state.Count with
+            | 0 ->
+                // We didn't find an fsproj in the workspace directory
+                // This case should not happen since we activate the extension only if an fsproj is found
+                do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
+                    |> Promise.fromThenable
+                    |> Promise.ignore
+            | 1 ->
+                // Only one fsproj found, run mechanic directly
+                let projFile = state |> Seq.head |> (fun keyValue -> keyValue.Value.Project)
+                do! Mechanic.run projFile outputChannel
+            | _ ->
+                // Several fsproj found, ask the users which one to use
+                let! projFile = askFsProjs state.Keys
+
+                match projFile with
+                | None ->
+                    do! Vscode.window.showInformationMessage("No project selected, command canceled", [] |> ResizeArray)
+                        |> Promise.fromThenable
+                        |> Promise.ignore
+                | Some file ->
+                    do! Mechanic.run file outputChannel
 }
 
 let activate (context : Vscode.ExtensionContext) =
@@ -50,16 +73,12 @@ let activate (context : Vscode.ExtensionContext) =
         |> ignore
     | Some ext ->
         ext.exports.ProjectLoadedEvent $ (fun (project : Project) ->
-            let exist =
-                state
-                |> Seq.toList
-                |> List.exists(fun currentProject ->
-                    currentProject.Project = project.Project
-                )
-
-            // Only add the project if not already known
-            if not exist then
-                state.Add project
+            // If the project is already known, update it
+            if state.ContainsKey project.Project then
+                state.[project.Project] <- project
+            // If the project is not known, add it
+            else
+                state.Add(project.Project, project)
         ) |> ignore
 
         Vscode.commands.registerCommand("mechanic.run", fun input ->
