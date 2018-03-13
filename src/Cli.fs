@@ -8,9 +8,9 @@ open Fable.PowerPack
 let inline (</>) a b = a + Node.Exports.path.sep + b
 
 let pluginPath =
-    match Vscode.extensions.getExtension "Mechanic.mechanic" with
+    match Vscode.extensions.getExtension "Ionide.mechanic" with
     | Some extension -> extension.extensionPath
-    | None -> failwith "Failed to find `Mechanic.mechanic` extension"
+    | None -> failwith "Failed to find `Ionide.mechanic` extension"
 
 let pluginBinPath = pluginPath </> "bin" </> "Mechanic"
 
