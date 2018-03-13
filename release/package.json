@@ -7,7 +7,7 @@
 			"url": "https://github.com/ionide/ionide-vscode-mechanic"
 		}
 	],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^0.10.10"
   },
