@@ -1,39 +1,51 @@
 {
   "name": "mechanic",
   "publisher": "Ionide",
-	"contributors": [
-		{
-			"name": "Mechanic team",
-			"url": "https://github.com/ionide/ionide-vscode-mechanic"
-		}
-	],
+  "contributors": [
+    {
+      "name": "Mechanic team",
+      "url": "https://github.com/ionide/ionide-vscode-mechanic"
+    }
+  ],
   "version": "0.0.3",
   "engines": {
     "vscode": "^0.10.10"
   },
   "categories": [
-		"Linters",
-		"Languages"
+    "Linters",
+    "Languages"
   ],
   "activationEvents": [
     "workspaceContains:**/*.fsproj"
   ],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ionide/ionide-vscode-mechanic.git"
-	},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ionide/ionide-vscode-mechanic.git"
+  },
   "main": "./mechanic",
   "contributes": {
     "commands": [
       {
         "command": "mechanic.run",
-        "title": "Run",
+        "title": "Order files",
         "category": "Mechanic"
       }
     ],
     "outputChannels": [
       "Mechanic"
-    ]
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "mechanic.run",
+          "when": "view == ionide.projectExplorer && viewItem == ionide.projectExplorer.project"
+        },
+        {
+          "command": "mechanic.run",
+          "when": "view == ionide.projectExplorer && viewItem == ionide.projectExplorer.projectExe"
+        }
+      ]
+    }
   },
   "extensionDependencies": [
     "Ionide.Ionide-fsharp"
