@@ -56,6 +56,7 @@ let activate (context : Vscode.ExtensionContext) =
                 |> List.exists(fun currentProject ->
                     currentProject.Project = project.Project
                 )
+
             // Only add the project if not already known
             if not exist then
                 state.Add project
@@ -63,7 +64,6 @@ let activate (context : Vscode.ExtensionContext) =
 
         Vscode.commands.registerCommand("mechanic.run", fun input ->
             let m = unbox<ProjectExplorerModel option> input
-            printfn "M: %A" m
             Promise.start (runInScope m)
             None
         )
