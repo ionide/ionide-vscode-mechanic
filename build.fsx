@@ -61,11 +61,10 @@ Target "CopyMechanic" (fun _ ->
 
 Target "Default" DoNothing
 
-"YarnInstall" ?=> "Build"
-"DotNetRestore" ?=> "Build"
-
 "Clean"
+==> "YarnInstall"
 ==> "CopyMechanic"
+==> "DotNetRestore"
 ==> "Build"
 ==> "Default"
 
