@@ -1,6 +1,6 @@
 {
   "name": "mechanic",
-  "publisher": "Mechanic",
+  "publisher": "Ionide",
   "version": "0.0.1",
   "engines": {
     "vscode": "^0.10.10"
