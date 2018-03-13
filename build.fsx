@@ -28,7 +28,7 @@ Target "Clean" (fun _ ->
 )
 
 Target "YarnInstall" <| fun () ->
-    Yarn (fun p -> { p with Command = Install Standard })
+    Yarn (fun p -> { p with Command = Install InstallArgs.PureLockfile })
 
 Target "DotNetRestore" <| fun () ->
     DotNetCli.Restore (fun p -> { p with WorkingDir = "src" } )
