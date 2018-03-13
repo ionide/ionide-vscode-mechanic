@@ -73,12 +73,7 @@ let activate (context : Vscode.ExtensionContext) =
         |> ignore
     | Some ext ->
         ext.exports.ProjectLoadedEvent $ (fun (project : Project) ->
-            // If the project is already known, update it
-            if state.ContainsKey project.Project then
-                state.[project.Project] <- project
-            // If the project is not known, add it
-            else
-                state.Add(project.Project, project)
+            state.[project.Project] <- project
         ) |> ignore
 
         Vscode.commands.registerCommand("mechanic.run", fun input ->
