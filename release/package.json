@@ -1,16 +1,27 @@
 {
   "name": "mechanic",
   "publisher": "Ionide",
+	"contributors": [
+		{
+			"name": "Mechanic team",
+			"url": "https://github.com/ionide/ionide-vscode-mechanic"
+		}
+	],
   "version": "0.0.1",
   "engines": {
     "vscode": "^0.10.10"
   },
   "categories": [
-    "Other"
+		"Linters",
+		"Languages"
   ],
   "activationEvents": [
     "workspaceContains:**/*.fsproj"
   ],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ionide/ionide-vscode-mechanic.git"
+	},
   "main": "./mechanic",
   "contributes": {
     "commands": [
