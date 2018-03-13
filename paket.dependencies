@@ -16,4 +16,6 @@ git https://github.com/fsprojects/Mechanic.git master build:"build.sh --use-mono
 group build
     source https://www.nuget.org/api/v2
 
+    github fsharp/FAKE modules/Octokit/Octokit.fsx
+
     nuget Fake
