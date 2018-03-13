@@ -5,11 +5,8 @@
 #I "packages/build/FAKE/tools"
 #r "FakeLib.dll"
 open System
-open System.Diagnostics
-open System.IO
 open Fake
 open Fake.YarnHelper
-open Fake.ZipHelper
 open Fake.FileUtils
 
 // --------------------------------------------------------------------------------------
