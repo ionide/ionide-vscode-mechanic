@@ -8,12 +8,11 @@ open Model
 let state = ResizeArray<Project>()
 let outputChannel = Vscode.window.createOutputChannel "Mechanic"
 
-let private  askFsProjs (projFiles : string seq) =
-    promise {
-        return!
-            Vscode.window.showQuickPick(!^ (projFiles |> ResizeArray))
-            |> Promise.fromThenable
-    }
+let private askFsProjs (projFiles : string seq) = promise {
+    return!
+        Vscode.window.showQuickPick(!^ (projFiles |> ResizeArray))
+        |> Promise.fromThenable
+}
 
 let private runInScope = promise {
     match state.Count with
