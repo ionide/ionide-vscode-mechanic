@@ -8,9 +8,9 @@ open Fable.PowerPack
 let inline (</>) a b = a + Node.Exports.path.sep + b
 
 let pluginPath =
-    match Vscode.extensions.getExtension "Mechanic.mechanic" with
+    match Vscode.extensions.getExtension "Ionide.mechanic" with
     | Some extension -> extension.extensionPath
-    | None -> failwith "Failed to find `Mechanic.mechanic` extension"
+    | None -> failwith "Failed to find `Ionide.mechanic` extension"
 
 let pluginBinPath = pluginPath </> "bin" </> "Mechanic"
 
@@ -19,11 +19,7 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
         createObj [
             "cwd" ==> Vscode.workspace.rootPath
             "detached" ==> true
-            "shell" ==> true
         ]
-
-    printfn "%A" pluginBinPath
-    printfn "%A" projectFile
 
     let prms =
         seq { yield pluginBinPath </> "mech.dll"
@@ -39,19 +35,35 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
     |> Process.toPromise
 
 let run projFile outputChannel =
-    promise {
-        let! result = raw projFile outputChannel
-        match result with
-        | 0 ->
-            do! Vscode.window.showInformationMessage("Mechanic completed", [] |> ResizeArray)
-                |> Promise.fromThenable
-                |> Promise.ignore
-        | _ ->
-            let! result = Vscode.window.showErrorMessage("Mechanic failed", [ "Show output" ] |> ResizeArray)
-                          |> Promise.fromThenable
+    let progressOptions = jsOptions<Vscode.ProgressOptions> (fun o ->
+        o.location <- Vscode.ProgressLocation.Window
+    )
 
+    Vscode.window.withProgress(progressOptions, fun p ->
+        // Bindings don't have Vscode.ProgressMessage yet
+        let pm =
+            createObj [
+                "message" ==> "Mechanic is running"
+            ]
+        p.report pm
+
+        promise {
+            let! result = raw projFile outputChannel
             match result with
-            | Some "Show output" ->
-                outputChannel.show(true)
-            | None | Some _ -> ()
-    }
+            | 0 ->
+                return! Vscode.window.showInformationMessage("Mechanic completed", [] |> ResizeArray)
+                    |> Promise.fromThenable
+                    |> Promise.ignore
+
+            | _ ->
+                let! result = Vscode.window.showErrorMessage("Mechanic failed", [ "Show output" ] |> ResizeArray)
+                              |> Promise.fromThenable
+
+                match result with
+                | Some "Show output" ->
+                    outputChannel.show(true)
+                | None | Some _ -> ()
+        }
+        |> Promise.toThenable
+    )
+    |> Promise.fromThenable
