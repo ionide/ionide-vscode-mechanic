@@ -10,7 +10,7 @@
     "fable-loader": "^1.1.6",
     "vscode": "^1.1.13",
     "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.11",
+    "webpack-cli": "^2.0.12",
     "webpack-node-externals": "^1.6.0"
   }
 }
