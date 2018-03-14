@@ -1,3 +1,6 @@
+### 0.0.14 - 2018-03-14
+* Normalize paths to current operating system - https://github.com/ionide/ionide-vscode-mechanic/pull/19
+
 ### 0.0.13 - 2018-03-14
 * Better error message when path is not valid
 
