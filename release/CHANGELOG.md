@@ -1,3 +1,6 @@
+### 0.0.13 - 2018-03-14
+* Better error message when path is not valid
+
 ### 0.0.12 - 2018-03-14
 * Use latest FSharp.Compiler.Service
 
