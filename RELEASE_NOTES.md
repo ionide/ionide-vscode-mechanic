@@ -1,3 +1,6 @@
+### 0.0.12 - 2018-03-14
+* Use latest FSharp.Compiler.Service
+
 ### 0.0.11 - 2018-03-14
 * Choose project based on active file - https://github.com/ionide/ionide-vscode-mechanic/pull/16
 
