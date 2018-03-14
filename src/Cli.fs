@@ -23,7 +23,7 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
 
     let prms =
         seq { yield pluginBinPath </> "mech.dll"
-              yield IO.normalizePath projectFile } |> ResizeArray
+              yield projectFile } |> ResizeArray
 
     let progressOptions = jsOptions<Vscode.ProgressOptions> (fun o ->
         o.location <- Vscode.ProgressLocation.Window
@@ -51,10 +51,11 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
 
 let run projFile outputChannel =
     promise {
+        let projFile = IO.normalizePath projFile
         let! result = raw projFile outputChannel
         match result with
         | 0 ->
-            return! Vscode.window.showInformationMessage("Mechanic completed", [] |> ResizeArray)
+            return! Vscode.window.showInformationMessage("Mechanic completed. Reordered files in " + projFile, [] |> ResizeArray)
                 |> Promise.fromThenable
                 |> Promise.ignore
 
