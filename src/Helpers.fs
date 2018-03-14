@@ -12,6 +12,15 @@ module Helpers
 
         let inline ignore promise = Promise.map ignore promise
 
+    module IO =
+        let dirSeparator = Fable.Import.Node.Exports.path.sep
+
+        let inline normalizePath(path:string) =
+            (if path.Contains(":") then path.TrimStart '/' else path)
+              .Replace("\\",dirSeparator)
+              .Replace("/",dirSeparator).TrimEnd('/').TrimEnd('\\')
+              .Replace(dirSeparator + "." + dirSeparator, dirSeparator)
+
     module Process =
 
         open Fable.Import

@@ -23,7 +23,7 @@ let private raw (projectFile : string) (outputChannel : Vscode.OutputChannel) =
 
     let prms =
         seq { yield pluginBinPath </> "mech.dll"
-              yield projectFile } |> ResizeArray
+              yield IO.normalizePath projectFile } |> ResizeArray
 
     let progressOptions = jsOptions<Vscode.ProgressOptions> (fun o ->
         o.location <- Vscode.ProgressLocation.Window

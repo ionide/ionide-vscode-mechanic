@@ -39,17 +39,20 @@ let private runInScope (input: ProjectExplorerModel option) = promise {
         match Vscode.window.activeTextEditor with
         // Active file is an .fs file, try to find the associated project
         | Some (TextEditor.IsFsFile textEditor) ->
+            let currentFile = IO.normalizePath textEditor.document.uri.path
             let projectOption =
                 state
                 |> Seq.map (fun keyValue -> keyValue.Value)
                 |> Seq.tryFind (fun (project : Project) ->
-                    project.Files |> List.contains textEditor.document.uri.path
-                )
+                    project.Files 
+                    |> List.map IO.normalizePath
+                    |> List.contains currentFile)
 
             match projectOption with
             | None ->
                 // Current version of Mechanic only work if the .fs file is inside a project
-                do! Vscode.window.showWarningMessage("Mechanic not run, we couldn't find a project associated with the active file", [] |> ResizeArray)
+                let error = "Mechanic not run, there is no project associated with the active file: " + currentFile
+                do! Vscode.window.showWarningMessage(error, [] |> ResizeArray)
                     |> Promise.fromThenable
                     |> Promise.ignore
             | Some project ->
@@ -65,7 +68,7 @@ let private runInScope (input: ProjectExplorerModel option) = promise {
             | 0 ->
                 // We didn't find an fsproj in the workspace directory
                 // This case should not happen since we activate the extension only if an fsproj is found
-                do! Vscode.window.showWarningMessage("Mechanic not run, we didn't find a fsproj in your workspace", [] |> ResizeArray)
+                do! Vscode.window.showWarningMessage("Mechanic not run, no fsproj file found in the workspace", [] |> ResizeArray)
                     |> Promise.fromThenable
                     |> Promise.ignore
             | 1 ->
