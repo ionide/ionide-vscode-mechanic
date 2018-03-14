@@ -1,4 +1,4 @@
-### 0.0.10 - 2018-03-14
+### 0.0.11 - 2018-03-14
 * Choose project based on active file - https://github.com/ionide/ionide-vscode-mechanic/pull/16
 
 ### 0.0.9 - 2018-03-13
