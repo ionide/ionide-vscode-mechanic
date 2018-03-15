@@ -678,13 +678,13 @@ NUGET
       System.Xml.ReaderWriter (>= 4.3) - restriction: || (&& (< monoandroid) (< monotouch) (< net45) (>= netstandard1.3) (< win8) (< wpa81) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net45) (>= netstandard1.0) (< netstandard1.3) (< win8) (< wp8) (< wpa81)) (< portable-net45+win8+wp8+wpa81)
 GITHUB
   remote: fable-compiler/ts2fable-exports
-    VSCode.fs (b7f0ed29dca26325ff55f709cb90b2ee555a188b)
+    VSCode.fs (2c37bb3fceb6f36494745acbcc3d001893786623)
 GIT
   remote: https://github.com/fsprojects/Mechanic.git
-     (5a37fc71760abfb36eae5dc959bc37e820eff93c)
+     (bae72183718d8dafbe360ecec38ee078a8aaabc7)
       build: build.cmd Release
       os: windows
-     (5a37fc71760abfb36eae5dc959bc37e820eff93c)
+     (bae72183718d8dafbe360ecec38ee078a8aaabc7)
       build: build.sh --use-mono -- Release
       os: mono
 GROUP build
