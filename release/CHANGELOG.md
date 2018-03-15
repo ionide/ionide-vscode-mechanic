@@ -1,3 +1,6 @@
+### 0.0.15 - 2018-03-15
+* Checking for external defintions from project references - https://github.com/fsprojects/Mechanic/pull/91
+
 ### 0.0.14 - 2018-03-14
 * Normalize paths to current operating system - https://github.com/ionide/ionide-vscode-mechanic/pull/19
 
