@@ -1,3 +1,7 @@
+### 0.0.16 - 2018-03-19
+* Support for verbose sdk (old project format) - https://github.com/fsprojects/Mechanic/pull/95
+* Detecting 'dotnet restore' errors - https://github.com/fsprojects/Mechanic/pull/93
+
 ### 0.0.15 - 2018-03-15
 * Checking for external defintions from project references - https://github.com/fsprojects/Mechanic/pull/91
 
