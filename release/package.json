@@ -7,10 +7,12 @@
 			"url": "https://github.com/ionide/ionide-vscode-mechanic"
 		}
 	],
+	"description": "F# File reordering tool",
   "version": "0.0.16",
   "engines": {
     "vscode": "^0.10.10"
   },
+	"icon": "images/logo.png",
   "categories": [
     "Linters",
     "Languages"

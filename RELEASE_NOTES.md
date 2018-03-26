@@ -1,3 +1,7 @@
+### 0.0.17 - 2018-03-26
+* Update to FSharp.Compiler.Service 22.0.1 - https://github.com/fsprojects/Mechanic/pull/10
+* New Logo - https://github.com/fsprojects/Mechanic/pull/100
+
 ### 0.0.16 - 2018-03-19
 * Support for verbose sdk (old project format) - https://github.com/fsprojects/Mechanic/pull/95
 * Detecting 'dotnet restore' errors - https://github.com/fsprojects/Mechanic/pull/93
