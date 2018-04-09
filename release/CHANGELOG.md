@@ -1,3 +1,6 @@
+### 0.0.18 - 2018-04-09
+* Updated to latest mechanic
+
 ### 0.0.17 - 2018-03-26
 * Update to FSharp.Compiler.Service 22.0.1 - https://github.com/fsprojects/Mechanic/pull/10
 * New Logo - https://github.com/fsprojects/Mechanic/pull/100
