@@ -1,3 +1,6 @@
+### 0.0.19 - 2018-04-17
+* Updated to latest mechanic
+
 ### 0.0.18 - 2018-04-09
 * Updated to latest mechanic
 
